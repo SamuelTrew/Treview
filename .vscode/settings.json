@@ -2,5 +2,9 @@
    "files.autoSave": "afterDelay",
    "editor.tabSize": 3,
    "prettier.configPath": ".prettierrc",
-   "prettier.printWidth": 100
+   "prettier.printWidth": 100,
+   "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+   },
+   "eslint.validate": ["javascript"]
 }

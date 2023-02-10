@@ -89,7 +89,6 @@
             "plugin:@typescript-eslint/recommended"
          ],
          "rules": {
-            // Allow defining variables after use (useful for functions and classes)
             "@typescript-eslint/no-use-before-define": "off",
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-this-alias": "off",
