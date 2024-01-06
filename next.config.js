@@ -7,6 +7,10 @@ await import("./src/env.js")
 /** @type {import("next").NextConfig} */
 const config = {
    reactStrictMode: true,
+   experimental: {
+      esmExternals: "loose",
+      serverComponentsExternalPackages: ["mongoose"],
+   },
 }
 
 export default config
