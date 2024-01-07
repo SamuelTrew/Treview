@@ -1,58 +1,68 @@
-import dbConnect from "~/db/dbConnect"
-import Pets from "~/db/models/Pets"
+import { TRPCError } from "@trpc/server"
+import { z } from "zod"
 
-import type { NextApiRequest, NextApiResponse } from "next"
+import { createRouter, protectedProcedure, publicProcedure } from "../trpc"
+import { Pets } from "~/db/models/Pets"
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-   const {
-      query: { id },
-      method,
-   } = req
-
-   await dbConnect()
-
-   switch (method) {
-      case "GET" /* Get a model by its ID */:
-         try {
-            const pet = await Pets.findById(id)
-            if (!pet) {
-               return res.status(400).json({ success: false })
-            }
-            res.status(200).json({ success: true, data: pet })
-         } catch (error) {
-            res.status(400).json({ success: false })
+export const petsRouter = createRouter({
+   get: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => {
+      try {
+         const pet = await Pets.findById(input.id)
+         if (!pet) {
+            throw new TRPCError({
+               code: "NOT_FOUND",
+               message: `Could not find pet with id: ${input.id}`,
+            })
          }
-         break
+         return pet
+      } catch (error) {
+         throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Failed to make request while trying to find pet with id: ${input.id}`,
+            cause: error,
+         })
+      }
+   }),
 
-      case "PUT" /* Edit a model by its ID */:
+   create: protectedProcedure
+      .input(z.object({ id: z.string(), name: z.string() }))
+      .mutation(async ({ input }) => {
          try {
-            const pet = await Pets.findByIdAndUpdate(id, req.body, {
+            const pet = await Pets.findByIdAndUpdate(input.id, input, {
                new: true,
                runValidators: true,
             })
             if (!pet) {
-               return res.status(400).json({ success: false })
+               throw new TRPCError({
+                  code: "NOT_FOUND",
+                  message: `Could not find pet with id: ${input.id} to update`,
+               })
             }
-            res.status(200).json({ success: true, data: pet })
+            return pet
          } catch (error) {
-            res.status(400).json({ success: false })
+            throw new TRPCError({
+               code: "INTERNAL_SERVER_ERROR",
+               message: `Failed to make request while trying to update pet with id: ${input.id}`,
+               cause: error,
+            })
          }
-         break
+      }),
 
-      case "DELETE" /* Delete a model by its ID */:
-         try {
-            const deletedPet = await Pet.deleteOne({ _id: id })
-            if (!deletedPet) {
-               return res.status(400).json({ success: false })
-            }
-            res.status(200).json({ success: true, data: {} })
-         } catch (error) {
-            res.status(400).json({ success: false })
+   delete: protectedProcedure.input(z.object({ id: z.string() })).mutation(async ({ input }) => {
+      try {
+         const deletedPet = await Pets.deleteOne({ _id: id })
+         if (!deletedPet || !deletedPet.acknowledged || deletedPet.deletedCount !== 1) {
+            throw new TRPCError({
+               code: "NOT_FOUND",
+               message: `Could not find pet with id ${input.id} to delete`,
+            })
          }
-         break
-
-      default:
-         res.status(400).json({ success: false })
-         break
-   }
-}
+      } catch (error) {
+         throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Failed to make request while trying to delete pet with id: ${input.id}`,
+            cause: error,
+         })
+      }
+   }),
+})

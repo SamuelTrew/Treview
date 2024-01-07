@@ -1,13 +1,13 @@
 import { z } from "zod"
 
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc"
+import { createRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc"
 
 let post = {
    id: 1,
    name: "Hello World",
 }
 
-export const postRouter = createTRPCRouter({
+export const postRouter = createRouter({
    hello: publicProcedure.input(z.object({ text: z.string() })).query(({ input }) => {
       return {
          greeting: `Hello ${input.text}`,

@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-export interface Pets extends mongoose.Document {
+interface Pets extends mongoose.Document {
    age: number
    diet: string[]
    dislikes: string[]
@@ -13,7 +13,7 @@ export interface Pets extends mongoose.Document {
 }
 
 /* PetSchema will correspond to a collection in your MongoDB database. */
-const PetsSchema = new mongoose.Schema<Pets>({
+const PetsSchema = new mongoose.Schema({
    name: {
       /* The name of this pet */
 
@@ -68,4 +68,4 @@ const PetsSchema = new mongoose.Schema<Pets>({
    },
 })
 
-export default mongoose.models["Pets"] ?? mongoose.model<Pets>("Pets", PetsSchema)
+export const Pets = mongoose.model("Pet", PetsSchema)

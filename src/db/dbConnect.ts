@@ -1,6 +1,10 @@
 import mongoose from "mongoose"
 declare global {
-   var mongoose: any // This must be a `var` and not a `let / const`
+   // eslint-disable-next-line no-var
+   var mongoose: {
+      conn: mongoose.Mongoose | null
+      promise: Promise<mongoose.Mongoose> | null
+   }
 }
 
 const MONGODB_URI = process.env["MONGODB_URI"]!
@@ -23,9 +27,7 @@ async function dbConnect() {
       const opts = {
          bufferCommands: false,
       }
-      cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-         return mongoose
-      })
+      cached.promise = mongoose.connect(MONGODB_URI, opts)
    }
    try {
       cached.conn = await cached.promise
