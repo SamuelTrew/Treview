@@ -1,52 +1,34 @@
 {
-   "compilerOptions": {
-      /* Base Options: */
-      "esModuleInterop": true,
-      "skipLibCheck": true,
-      "target": "esnext",
-      "allowJs": true,
-      "resolveJsonModule": true,
-      "moduleDetection": "force",
-      "isolatedModules": true,
-
-      /* Strictness */
-      "strict": true,
-      "noUncheckedIndexedAccess": true,
-      "checkJs": true,
-      "noImplicitOverride": true,
-      "noImplicitReturns": true,
-      "noPropertyAccessFromIndexSignature": true,
-      "allowUnreachableCode": false,
-      "allowUnusedLabels": false,
-
-      /* Bundled projects */
-      "lib": ["dom", "dom.iterable", "esnext"],
-      "noEmit": true,
-      "module": "esnext",
-      "moduleResolution": "Bundler",
-      "jsx": "preserve",
-      "plugins": [{ "name": "next" }],
-      "incremental": true,
-
-      /* Path Aliases */
-      "baseUrl": ".",
-      "paths": {
-         "~/*": ["./src/*"]
-      },
-
-      //Extra options
-      "forceConsistentCasingInFileNames": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true
-   },
-   "include": [
-      ".eslintrc.cjs",
-      "next-env.d.ts",
-      "**/*.ts",
-      "**/*.tsx",
-      "**/*.cjs",
-      "**/*.js",
-      ".next/types/**/*.ts"
-   ],
-   "exclude": ["node_modules"]
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "lib/seed.ts"
+  ],
+  "exclude": ["node_modules"]
 }

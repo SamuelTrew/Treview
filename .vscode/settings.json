@@ -1,10 +1,4 @@
 {
-   "files.autoSave": "afterDelay",
-   "editor.tabSize": 3,
-   "prettier.configPath": ".prettierrc",
-   "prettier.printWidth": 100,
-   "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
-   },
-   "eslint.validate": ["javascript"]
+  "typescript.tsdk": "node_modules/.pnpm/typescript@5.0.4/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
